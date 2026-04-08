@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>円周率の近似 | 図形</title>
+    <style>
+      body {
+        background: #fafafa;
+        color: #060606;
+        padding: 20px;
+        font-family: monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>円周率の近似 | 図形</h1>
+    <br>
+    <h2>正<span id="poly"></span>角形（ p = <span id="poly2"></span> ）</h2>
+    <h2>計算スピード : <span id="calcspeed"></span>（左右矢印キーで計算スピードを変更する）</h2>
+    <br>
+    <h2><span id="pB"></span> > π > <span id="pSm"></span></h2>
+    <hr>
+    <h3><span id="cad1l"></span></h3>
+    <h3><span id="cad2l"></span></h3>
+    <h3><span id="cad3l"></span></h3>
+    <h3><span id="cad4l"></span></h3>
+    <h3><span id="cad5l"></span></h3>
+    <h3><span id="cad6l"></span></h3>
+    <h3><span id="cad7l"></span></h3>
+    <h3><span id="cad8l"></span></h3>
+    <h3><span id="cad9l"></span></h3>
+    <h3><span id="cad10l"></span></h3>
+    <h3><span id="cad11l"></span></h3>
+    <h3><span id="cad12l"></span></h3>
+    <script>
+      let piBig = 0;
+      let piSmall = 0;
+      let p = 6; // 何角形か
+      let calcSpeed = 5;
+      let ACTUALcalcSpeed = 0.1;
+      let FcSc = 0;
+      let math1 = 0;
+      let math2 = 0;
+      let math3 = 0;
+      let calcdetails = ["","","","","","","","","","","",""];
+      const naviLang = navigator.languages;
+      
+      function tatcd(content) {
+        calcdetails.unshift(content)
+        if (calcdetails.length > 10) {
+          calcdetails.pop()
+        }
+      }
+      
+      setInterval( function() {
+        FcSc = calcSpeed/10;
+        ACTUALcalcSpeed = 1 / Math.pow(10, FcSc); 
+        
+        cad1l.innerHTML = calcdetails[0];
+        cad2l.innerHTML = calcdetails[1];
+        cad3l.innerHTML = calcdetails[2];
+        cad4l.innerHTML = calcdetails[3];
+        cad5l.innerHTML = calcdetails[4];
+        cad6l.innerHTML = calcdetails[5];
+        cad7l.innerHTML = calcdetails[6];
+        cad8l.innerHTML = calcdetails[7];
+        cad9l.innerHTML = calcdetails[8];
+        cad10l.innerHTML = calcdetails[9];
+        cad11l.innerHTML = calcdetails[10];
+        cad12l.innerHTML = calcdetails[11];
+        calcspeed.innerHTML = calcSpeed;
+  
+      }, 16)
+      
+      document.addEventListener("keydown", function(event) {
+        if (event.key == "ArrowLeft") {
+          calcSpeed--
+        } else if (event.key == "ArrowRight") {
+          calcSpeed++
+        }
+      })
+      
+      function update() {
+        poly.innerHTML = p;
+        poly2.innerHTML = p;
+        pB.innerHTML = piBig;
+        pSm.innerHTML = piSmall;
+      }
+      
+      update();
+      
+      function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+      
+      async function loop() {
+        while(true) {
+          math1 = 360/p;
+          tatcd("Division : math1 = 360/p;");
+          await sleep(ACTUALcalcSpeed*1000);
+          math2 = math1/2;
+          tatcd("Division : math2 = math1/2;");
+          await sleep(ACTUALcalcSpeed*1000);
+          math1 = Math.sin(math2*(Math.PI/180));
+          tatcd("sin : math1 = sin math2°;");
+          await sleep(ACTUALcalcSpeed*1000);
+          math2 = math1*2;
+          tatcd("Multiplication : math2 = math1*2;");
+          await sleep(ACTUALcalcSpeed*1000);
+          math3 = math2*p;
+          tatcd("Multiplication : math3 = math2*p;");
+          await sleep(ACTUALcalcSpeed*1000);
+          math1 = math3/2;
+          tatcd("Division : math1 = math3/2;");
+          await sleep(ACTUALcalcSpeed*1000)
+          piSmall = math1;
+          tatcd("> piSmall = " + piSmall.toFixed(15));
+          await sleep(ACTUALcalcSpeed*1000);
+          math1 = 360/p;
+          tatcd("Division : math1 = 360/p;");
+          await sleep(ACTUALcalcSpeed*1000);
+          math2 = math1/2;
+          tatcd("Division : math2 = math1/2;");
+          await sleep(ACTUALcalcSpeed*1000);
+          math1 = Math.tan(math2*(Math.PI/180));
+          tatcd("tan : math1 = tan math2°;");
+          await sleep(ACTUALcalcSpeed*1000);
+          math2 = math1*2;
+          tatcd("Multiplication : math2 = math1*2;");
+          await sleep(ACTUALcalcSpeed*1000);
+          math1 = math2*p;
+          tatcd("Multiplication : math1 = math2*p;");
+          await sleep(ACTUALcalcSpeed*1000);
+          math2 = math1/2;
+          tatcd("Division : math2 = math1/2;");
+          await sleep(ACTUALcalcSpeed*1000)
+          piBig = math2;
+          tatcd("> piBig = " + piBig.toFixed(15));
+          await sleep(ACTUALcalcSpeed*1000);
+          tatcd(piBig + " > " + " π " + " > " + piSmall);
+          await sleep(ACTUALcalcSpeed*1000);
+          p++;
+          tatcd("> p++;");
+          await sleep(ACTUALcalcSpeed*1000);
+          p++;
+          tatcd("> p++;");
+          await sleep(ACTUALcalcSpeed*1000);
+          tatcd("> Screen refresh");
+          update();
+          await sleep(ACTUALcalcSpeed*1000);
+        }
+      }
+      
+      loop();
+      
+    </script>
+  </body>
+</html>
